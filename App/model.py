@@ -46,6 +46,12 @@ def newCatalog():
                 'Pistas': None,
                 'instrumentalness':None,
                 'liveness':None,
+                'speechiness':None,
+                'acousticness':None,
+                'energy':None,
+                'valence':None,
+                'danceability':None
+
                 }
 
     catalog['Eventos'] = lt.newList('ARRAY_LIST')
@@ -62,12 +68,17 @@ def newCatalog():
     catalog['instrumentalness']=om.newMap("RBT")
     catalog['liveness']=om.newMap("RBT")
     catalog['speechiness']=om.newMap("RBT")
+    catalog['acousticness']=om.newMap("RBT")
+    catalog['energy']=om.newMap("RBT")
+    catalog['danceability']=om.newMap("RBT")
+    catalog['valence']=om.newMap("RBT")
     return catalog
     
 # Funciones para agregar informacion al catalogo
 def AddEvento(evento,catalog):
     lt.addLast(catalog['Eventos'],evento)
     mapping_artista(evento,catalog)
+    mapping_pista(evento, catalog)
     Order_instrumentalness(evento,catalog)
     Order_liveness(evento,catalog)
     return catalog
@@ -81,6 +92,16 @@ def mapping_artista(evento,catalog):
         lt.addLast(lista,evento)
         mp.put(catalog['Artistas'],evento["artist_id"],lista)
 
+
+def mapping_pista(evento,catalog):
+    if mp.contains(catalog['Pistas'],evento["track_id"]):
+        lista=me.getValue(mp.get(catalog['Pistas'],evento["track_id"]))
+        lt.addLast(lista,evento)
+    else:
+        lista=lt.newList("ARRAY_LIST")
+        lt.addLast(lista,evento)
+        mp.put(catalog['Pistas'],evento["track_id"],lista)
+
 def Order_instrumentalness(evento,catalog):
     instrumentalidad=evento["instrumentalness"]#se llama así por el copia y pega.
     if om.contains(catalog['instrumentalness'],instrumentalidad):
@@ -92,24 +113,66 @@ def Order_instrumentalness(evento,catalog):
         om.put(catalog['instrumentalness'],instrumentalidad,lista)
 
 def Order_speechiness(evento,catalog):
-    instrumentalidad=evento["speechiness"]
-    if om.contains(catalog['speechiness'],instrumentalidad):
-        lista=me.getValue(om.get(catalog['speechiness'],instrumentalidad))
+    speechiness=evento["speechiness"]
+    if om.contains(catalog['speechiness'],speechiness):
+        lista=me.getValue(om.get(catalog['speechiness'],speechiness))
         lt.addLast(lista,evento)
     else:
         lista=lt.newList("ARRAY_LIST")
         lt.addLast(lista,evento)
-        om.put(catalog['speechiness'],instrumentalidad,lista)
+        om.put(catalog['speechiness'],speechiness,lista)
 
 def Order_liveness(evento,catalog):
-    instrumentalidad=evento["liveness"]
-    if om.contains(catalog['liveness'],instrumentalidad):
-        lista=me.getValue(om.get(catalog['liveness'],instrumentalidad))
+    liveness=evento["liveness"]
+    if om.contains(catalog['liveness'],liveness):
+        lista=me.getValue(om.get(catalog['liveness'],liveness))
         lt.addLast(lista,evento)
     else:
         lista=lt.newList("ARRAY_LIST")
         lt.addLast(lista,evento)
-        om.put(catalog['liveness'],instrumentalidad,lista)
+        om.put(catalog['liveness'],liveness,lista)
+
+def Order_acousticness(evento,catalog):
+    acustica=evento["acousticness"]
+    if om.contains(catalog['acousticness'],acustica):
+        lista=me.getValue(om.get(catalog['acousticness'],acustica))
+        lt.addLast(lista,evento)
+    else:
+        lista=lt.newList("ARRAY_LIST")
+        lt.addLast(lista,evento)
+        om.put(catalog['acousticness'],acustica,lista)
+
+def Order_energy(evento,catalog):
+    energia=evento["energy"]
+    if om.contains(catalog['energy'], energia):
+        lista=me.getValue(om.get(catalog['energy'], energia))
+        lt.addLast(lista,evento)
+    else:
+        lista=lt.newList("ARRAY_LIST")
+        lt.addLast(lista,evento)
+        om.put(catalog['energy'], energia,lista)
+
+def Order_valence(evento,catalog):
+    valencia=evento["valence"]
+    if om.contains(catalog['valence'], valencia):
+        lista=me.getValue(om.get(catalog['valence'], valencia))
+        lt.addLast(lista,evento)
+    else:
+        lista=lt.newList("ARRAY_LIST")
+        lt.addLast(lista,evento)
+        om.put(catalog['valence'], valencia,lista)
+
+def Order_danceability(evento,catalog):
+    danceability=evento["danceability"]
+    if om.contains(catalog['danceability'], danceability):
+        lista=me.getValue(om.get(catalog['danceability'], danceability))
+        lt.addLast(lista,evento)
+    else:
+        lista=lt.newList("ARRAY_LIST")
+        lt.addLast(lista,evento)
+        om.put(catalog['danceability'], danceability,lista)
+
+
 
 #Falta hacer los otros mapas que ordenan por propiedad
 

@@ -39,7 +39,7 @@ operación solicitada
 """
 
 def printMenu():
-    print("Bienvenido")
+    print("\nBienvenido")
     print("1- Cargar información en el catálogo")
     print("2- Eventos de escucha que se encuentran en la interseccion de 2 rangos determinados")
     print("3- Encontrar musica para festejar")
@@ -56,12 +56,10 @@ while True:
         print("Cargando información de los archivos ....")
         catalog=ctrl.initialize()
         ctrl.Load_data(catalog,file)
-        #print(lt.subList(catalog["Eventos"],1,5))
-        #print(lt.subList(catalog["Eventos"],lt.size(catalog["Eventos"])-5,5))
-        #print(me.getValue(om.get(catalog["liveness"],"0.034")))
-        print(mp.size(catalog["Artistas"]))
-        #print(me.getValue(mp.get(catalog["Artistas"],"481d88c05dfb1c8709238453bbe14fee")))
-        print("Numero de eventos: "+str(lt.size(catalog["Eventos"])))
+        print("\nNumero de eventos: "+str(lt.size(catalog["Eventos"])))
+        print("Numero de artistas: "+str(mp.size(catalog["Artistas"])))
+        print("Numero de pistas: "+str(mp.size(catalog["Pistas"])))
+
     elif int(inputs[0]) == 2:
         char1=input("Caracteristica 1: ")
         min1=(input("Minimo: "))
@@ -72,6 +70,7 @@ while True:
         res=ctrl.Characterize_reps(char1,min1,max1,char2,min2,max2,catalog)
         print("Total de eventos de escucha: "+str(res[1]))
         print("Total autores: "+str(res[0]))
+
     elif int(inputs[0]) == 3:
         minl=input("Vivacidad minima: ")
         maxl=input("Vivacidad maxima: ")
