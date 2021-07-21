@@ -43,6 +43,9 @@ def printMenu():
     print("1- Cargar información en el catálogo")
     print("2- Eventos de escucha que se encuentran en la interseccion de 2 rangos determinados")
     print("3- Encontrar musica para festejar")
+    print("4- Encontrar musica para una ruptura amorosa")
+    print("5- Encontrar canciones y artistas por género")
+
 catalog = None
 file="context_content_features-small.csv"
 
@@ -59,6 +62,18 @@ while True:
         print("\nNumero de eventos: "+str(lt.size(catalog["Eventos"])))
         print("Numero de artistas: "+str(mp.size(catalog["Artistas"])))
         print("Numero de pistas: "+str(mp.size(catalog["Pistas"])))
+        print("\nPrimeros 5 eventos de escucha")
+        i=1
+        while i<=5:
+            evento=lt.getElement(catalog["Eventos"], i)
+            print("\nInstrumentalidad: {}, Liveness: {}, Speechiness: {}, Capacidad de Baile: {}, Valencia: {}, Sonoridad: {}, Tempo: {}, Acústica: {}, Energía: {}, Modo: {}, Clave: {}, Idioma del Tweet: {}, Fecha de creación: {}, Idioma del usuario: {}, Zona horaria: {}".format(evento['instrumentalness'], evento['liveness'], evento['speechiness'], evento['danceability'], evento['valence'], evento['loudness'], evento['tempo'],evento['acousticness'], evento['energy'], evento['mode'], evento['key'], evento['tweet_lang'], evento['created_at'], evento['lang'], evento['time_zone']))
+            i+=1
+        print("\nÚltimos 5 eventos de escucha")
+        i=1
+        while i<=5:
+            evento=lt.getElement(catalog["Eventos"], -i)
+            print("\nInstrumentalidad: {}, Liveness: {}, Speechiness: {}, Capacidad de Baile: {}, Valencia: {}, Sonoridad: {}, Tempo: {}, Acústica: {}, Energía: {}, Modo: {}, Clave: {}, Idioma del Tweet: {}, Fecha de creación: {}, Idioma del usuario: {}, Zona horaria: {}".format(evento['instrumentalness'], evento['liveness'], evento['speechiness'], evento['danceability'], evento['valence'], evento['loudness'], evento['tempo'],evento['acousticness'], evento['energy'], evento['mode'], evento['key'], evento['tweet_lang'], evento['created_at'], evento['lang'], evento['time_zone']))
+            i+=1
 
     elif int(inputs[0]) == 2:
         char1=input("Caracteristica 1: ")
