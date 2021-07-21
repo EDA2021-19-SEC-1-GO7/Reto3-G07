@@ -48,6 +48,9 @@ def Characterize_reps(char1:str,min_1:int,max_1:int,char2:str,min_2:int,max_2:in
 
 def Encontrar_musica_festejar(minl:str,mins:str,maxl:str,maxs:str,catalog):
     return model.Encontrar_musica_festejar(minl,mins,maxl,maxs,catalog)
+
+def Encontrar_musica_ruptura(minv,mint,maxv,maxt,catalog):
+    return model.Encontrar_musica_ruptura(minv,mint,maxv,maxt,catalog)
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo

@@ -50,8 +50,8 @@ def newCatalog():
                 'acousticness':None,
                 'energy':None,
                 'valence':None,
-                'danceability':None
-
+                'danceability':None,
+                'tempo':None
                 }
 
     catalog['Eventos'] = lt.newList('ARRAY_LIST')
@@ -72,6 +72,7 @@ def newCatalog():
     catalog['energy']=om.newMap("RBT")
     catalog['danceability']=om.newMap("RBT")
     catalog['valence']=om.newMap("RBT")
+    catalog['tempo']=om.newMap("RBT")
     return catalog
     
 # Funciones para agregar informacion al catalogo
@@ -81,6 +82,12 @@ def AddEvento(evento,catalog):
     mapping_pista(evento, catalog)
     Order_instrumentalness(evento,catalog)
     Order_liveness(evento,catalog)
+    Order_acousticness(evento,catalog)
+    Order_danceability(evento,catalog)
+    Order_energy(evento,catalog)
+    Order_speechiness(evento,catalog)
+    Order_valence(evento,catalog)
+    Order_tempo(evento,catalog)
     return catalog
 
 def mapping_artista(evento,catalog):
@@ -172,6 +179,15 @@ def Order_danceability(evento,catalog):
         lt.addLast(lista,evento)
         om.put(catalog['danceability'], danceability,lista)
 
+def Order_tempo(evento,catalog):
+    tempo=evento["tempo"]
+    if om.contains(catalog['tempo'], tempo):
+        lista=me.getValue(om.get(catalog['tempo'], tempo))
+        lt.addLast(lista,evento)
+    else:
+        lista=lt.newList("ARRAY_LIST")
+        lt.addLast(lista,evento)
+        om.put(catalog['tempo'], tempo,lista)
 
 
 #Falta hacer los otros mapas que ordenan por propiedad
@@ -198,7 +214,23 @@ def Encontrar_musica_festejar(minl:str,mins:str,maxl:str,maxs:str,catalog):
         for j in lt.iterator(i):
             if j["speechiness"]<=maxs and j["speechiness"]>=mins and not(mp.contains(mapa,j['track_id'])):
                 mp.put(mapa,j['track_id'],j)
-    return mp.size(mapa),lt.subList(mp.valueSet(mapa),1,8)
+    if mp.size(mapa)>8:
+       return mp.size(mapa),lt.subList(mp.valueSet(mapa),1,8)
+    else: 
+        return mp.size(mapa), mp.valueSet(mapa)
+
+def Encontrar_musica_ruptura(minv:str,mint:str,maxv:str,maxt:str,catalog):
+    mapa=mp.newMap(numelements=100000,maptype="PROBING")
+    lista_v=om.values(catalog['valence'],minv,maxv)
+    for i in lt.iterator(lista_v):
+        for j in lt.iterator(i):
+            if j["tempo"]<=maxt and j["tempo"]>=mint and not(mp.contains(mapa,j['track_id'])):
+                mp.put(mapa,j['track_id'],j)
+    if mp.size(mapa)>8:
+       return mp.size(mapa),lt.subList(mp.valueSet(mapa),1,8)
+    else: 
+        return mp.size(mapa), mp.valueSet(mapa)
+
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 # Funciones de ordenamiento

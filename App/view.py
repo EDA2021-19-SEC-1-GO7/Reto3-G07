@@ -94,9 +94,22 @@ while True:
         res=ctrl.Encontrar_musica_festejar(minl,mins,maxl,maxs,catalog)
         print("Numero de pistas: "+str(res[0]))
         lst=res[1]
-        for i in range(1,9):
+        for i in range(lt.size(lst)):
             E=lt.getElement(lst,i)
-            print("track_id: "+E['track_id'],"liveness: "+E["liveness"],"speechiness: "+E["speechiness"])
+            print("Track {}: ".format(i)+E['track_id'],"with liveness of: "+E["liveness"],"and speechiness of: "+E["speechiness"])
+
+    elif int(inputs[0]) == 4:
+        minv=input("Valencia minima: ")
+        maxv=input("Valencia maxima: ")
+        mint=input("Tempo minimo: ")
+        maxt=input("Tempo maximo: ")
+        res=ctrl.Encontrar_musica_ruptura(minv,mint,maxv,maxt,catalog)
+        print("Numero de pistas: "+str(res[0]))
+        lst=res[1]
+        for i in range(lt.size(lst)):
+            E=lt.getElement(lst,i)
+            print("Track {}: ".format(i)+E['track_id'],"with valence of: "+E["valence"],"and tempo of: "+E["tempo"])
+    
     else:
         sys.exit(0)
 sys.exit(0)
