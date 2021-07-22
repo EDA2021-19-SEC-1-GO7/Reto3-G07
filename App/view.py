@@ -121,7 +121,7 @@ while True:
         res=ctrl.Encontrar_musica_festejar(float(minl),float(mins),float(maxl),float(maxs),catalog)
         print("Numero de pistas: "+str(res[0]))
         lst=res[1]
-        for i in range(lt.size(lst)):
+        for i in range(1, lt.size(lst)+1):
             E=lt.getElement(lst,i)
             print("Track {}: ".format(i)+E['track_id'],"with liveness of: "+E["liveness"],"and speechiness of: "+E["speechiness"])
 
@@ -133,7 +133,7 @@ while True:
         res=ctrl.Encontrar_musica_ruptura(float(minv),float(mint),float(maxv),float(maxt),catalog)
         print("Numero de pistas: "+str(res[0]))
         lst=res[1]
-        for i in range(lt.size(lst)):
+        for i in range(1, lt.size(lst)+1):
             E=lt.getElement(lst,i)
             print("Track {}: ".format(i)+E['track_id'],"with valence of: "+E["valence"],"and tempo of: "+E["tempo"])
 

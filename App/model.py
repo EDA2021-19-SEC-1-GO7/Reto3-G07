@@ -210,23 +210,22 @@ def Order_loudness(evento,catalog):
 # Funciones de consulta
 def Characterize_reps(char1:str,min_1:float,max_1:float,char2:str,min_2:float,max_2:float,catalog)->tuple:
     listas_1=om.values(catalog[char1],min_1,max_1)
-    print(listas_1)
     eventos_n=0
     artistas=lt.newList("ARRAY_LIST")
     for i in lt.iterator(listas_1):
         for j in lt.iterator(i):
-            if j[char2]<=max_2 and j[char2]>=min_2:
+            if float(j[char2])<=max_2 and float(j[char2])>=min_2:
                 eventos_n+=1
                 if not(lt.isPresent(artistas,j["artist_id"])):
                     lt.addLast(artistas,j["artist_id"])
     return lt.size(artistas),eventos_n
 
-def Encontrar_musica_festejar(minl:str,mins:str,maxl:str,maxs:str,catalog):
+def Encontrar_musica_festejar(minl,mins,maxl,maxs,catalog):
     mapa=mp.newMap(numelements=100000,maptype="PROBING")
     listas_1=om.values(catalog['liveness'],minl,maxl)
     for i in lt.iterator(listas_1):
         for j in lt.iterator(i):
-            if j["speechiness"]<=maxs and j["speechiness"]>=mins and not(mp.contains(mapa,j['track_id'])):
+            if float(j["speechiness"])<=maxs and float(j["speechiness"])>=mins and not(mp.contains(mapa,j['track_id'])):
                 mp.put(mapa,j['track_id'],j)
     if mp.size(mapa)>8:
        return mp.size(mapa),lt.subList(mp.valueSet(mapa),1,8)
@@ -238,7 +237,7 @@ def Encontrar_musica_ruptura(minv:str,mint:str,maxv:str,maxt:str,catalog):
     lista_v=om.values(catalog['valence'],minv,maxv)
     for i in lt.iterator(lista_v):
         for j in lt.iterator(i):
-            if j["tempo"]<=maxt and j["tempo"]>=mint and not(mp.contains(mapa,j['track_id'])):
+            if float(j["tempo"])<=maxt and float(j["tempo"])>=mint and not(mp.contains(mapa,j['track_id'])):
                 mp.put(mapa,j['track_id'],j)
     if mp.size(mapa)>8:
        return mp.size(mapa),lt.subList(mp.valueSet(mapa),1,8)

@@ -60,6 +60,7 @@ def Traducir_generos(lista):
 
 def rep_artistas_por_genero(nombre, min, max, catalog):
     return model.rep_artistas_por_genero(nombre, min, max, catalog)
+    
 
 # Funciones de ordenamiento
 
