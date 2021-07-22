@@ -155,7 +155,7 @@ while True:
             for i in range(1,lt.size(lst)+1):
                 E=lt.getElement(lst,i)
                 print("Artist {}: ".format(i)+E['artist_id'])
-                
+              
     else:
         sys.exit(0)
 sys.exit(0)
