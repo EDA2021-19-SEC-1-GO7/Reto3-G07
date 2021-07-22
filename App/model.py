@@ -89,8 +89,8 @@ def AddEvento(evento,catalog):
     Order_energy(evento,catalog)
     Order_speechiness(evento,catalog)
     Order_valence(evento,catalog)
-    Order_tempo(evento,catalog)
     Order_loudness(evento,catalog)
+    Order_tempo(evento, catalog)
     return catalog
 
 def mapping_artista(evento,catalog):
@@ -113,7 +113,7 @@ def mapping_pista(evento,catalog):
         mp.put(catalog['Pistas'],evento["track_id"],lista)
 
 def Order_instrumentalness(evento,catalog):
-    instrumentalidad=evento["instrumentalness"]#se llama así por el copia y pega.
+    instrumentalidad=float(evento["instrumentalness"])
     if om.contains(catalog['instrumentalness'],instrumentalidad):
         lista=me.getValue(om.get(catalog['instrumentalness'],instrumentalidad))
         lt.addLast(lista,evento)
@@ -123,7 +123,7 @@ def Order_instrumentalness(evento,catalog):
         om.put(catalog['instrumentalness'],instrumentalidad,lista)
 
 def Order_speechiness(evento,catalog):
-    speechiness=evento["speechiness"]
+    speechiness=float(evento["speechiness"])
     if om.contains(catalog['speechiness'],speechiness):
         lista=me.getValue(om.get(catalog['speechiness'],speechiness))
         lt.addLast(lista,evento)
@@ -133,7 +133,7 @@ def Order_speechiness(evento,catalog):
         om.put(catalog['speechiness'],speechiness,lista)
 
 def Order_liveness(evento,catalog):
-    liveness=evento["liveness"]
+    liveness=float(evento["liveness"])
     if om.contains(catalog['liveness'],liveness):
         lista=me.getValue(om.get(catalog['liveness'],liveness))
         lt.addLast(lista,evento)
@@ -143,7 +143,7 @@ def Order_liveness(evento,catalog):
         om.put(catalog['liveness'],liveness,lista)
 
 def Order_acousticness(evento,catalog):
-    acustica=evento["acousticness"]
+    acustica=float(evento["acousticness"])
     if om.contains(catalog['acousticness'],acustica):
         lista=me.getValue(om.get(catalog['acousticness'],acustica))
         lt.addLast(lista,evento)
@@ -153,7 +153,7 @@ def Order_acousticness(evento,catalog):
         om.put(catalog['acousticness'],acustica,lista)
 
 def Order_energy(evento,catalog):
-    energia=evento["energy"]
+    energia=float(evento["energy"])
     if om.contains(catalog['energy'], energia):
         lista=me.getValue(om.get(catalog['energy'], energia))
         lt.addLast(lista,evento)
@@ -163,7 +163,7 @@ def Order_energy(evento,catalog):
         om.put(catalog['energy'], energia,lista)
 
 def Order_valence(evento,catalog):
-    valencia=evento["valence"]
+    valencia=float(evento["valence"])
     if om.contains(catalog['valence'], valencia):
         lista=me.getValue(om.get(catalog['valence'], valencia))
         lt.addLast(lista,evento)
@@ -173,7 +173,7 @@ def Order_valence(evento,catalog):
         om.put(catalog['valence'], valencia,lista)
 
 def Order_danceability(evento,catalog):
-    danceability=evento["danceability"]
+    danceability=float(evento["danceability"])
     if om.contains(catalog['danceability'], danceability):
         lista=me.getValue(om.get(catalog['danceability'], danceability))
         lt.addLast(lista,evento)
@@ -183,17 +183,17 @@ def Order_danceability(evento,catalog):
         om.put(catalog['danceability'], danceability,lista)
 
 def Order_tempo(evento,catalog):
-    tempo=evento["tempo"]
+    tempo=float(evento["tempo"])
     if om.contains(catalog['tempo'], tempo):
         lista=me.getValue(om.get(catalog['tempo'], tempo))
         lt.addLast(lista,evento)
     else:
         lista=lt.newList("ARRAY_LIST")
         lt.addLast(lista,evento)
-        om.put(catalog['tempo'], tempo,lista)
+        om.put(catalog['tempo'], tempo, lista)
 
 def Order_loudness(evento,catalog):
-    loudness=evento["loudness"]
+    loudness=float(evento["loudness"])
     if om.contains(catalog['loudness'], loudness):
         lista=me.getValue(om.get(catalog['loudness'], loudness))
         lt.addLast(lista,evento)
@@ -210,6 +210,7 @@ def Order_loudness(evento,catalog):
 # Funciones de consulta
 def Characterize_reps(char1:str,min_1:float,max_1:float,char2:str,min_2:float,max_2:float,catalog)->tuple:
     listas_1=om.values(catalog[char1],min_1,max_1)
+    print(listas_1)
     eventos_n=0
     artistas=lt.newList("ARRAY_LIST")
     for i in lt.iterator(listas_1):
@@ -272,7 +273,7 @@ def Traducir_generos(lista:list):
             min=60
             max=90
         elif numero==2:
-            name="Down Tempo"
+            name="Down-Tempo"
             min=70
             max=100
         elif numero==3:
@@ -308,18 +309,23 @@ def Traducir_generos(lista:list):
             min=int(input("Escriba el tempo mínimo: "))
             max=int(input("Escriba el tempo máximo: "))
         lt.addLast(generos,(name, min, max))
-    return generos['elements']
+    return lt.iterator(generos)
 
 def rep_artistas_por_genero(nombre, min, max, catalog):
     listas_t=om.values(catalog['tempo'],min,max)
     artistas=mp.newMap(numelements=100000,maptype="PROBING")
     eventos=mp.newMap(numelements=100000,maptype="PROBING")
     for i in lt.iterator(listas_t):
-        if not(mp.contains(artistas,i['artist_id'])):
-                mp.put(artistas,i['artist_id'],i)
-        if not(mp.contains(eventos, i['track_id'])):
-                mp.put(eventos, i['track_id'], i)
-    return listas_t
+        for j in lt.iterator(i):
+            if not(mp.contains(artistas,j['artist_id'])):
+                    mp.put(artistas,j['artist_id'],j)
+            if not(mp.contains(eventos, j['track_id'])):
+                    mp.put(eventos, j['track_id'], j)
+    if mp.size(artistas)>=10:
+        map_artistas=lt.subList(mp.valueSet(artistas),1,10)
+    else:
+        map_artistas=mp.valueSet(artistas)
+    return nombre, min, max, mp.size(artistas), mp.size(eventos), map_artistas
 
 
 

@@ -46,10 +46,10 @@ def Load_data(catalog,file):
 def Traducir_caracteristica(num):
     return model.Traducir_caracteristica(num)
 
-def Characterize_reps(char1:str,min_1:int,max_1:int,char2:str,min_2:int,max_2:int,catalog):
+def Characterize_reps(char1,min_1,max_1,char2,min_2,max_2,catalog):
     return model.Characterize_reps(char1,min_1,max_1,char2,min_2,max_2,catalog)
 
-def Encontrar_musica_festejar(minl:str,mins:str,maxl:str,maxs:str,catalog):
+def Encontrar_musica_festejar(minl,mins,maxl,maxs,catalog):
     return model.Encontrar_musica_festejar(minl,mins,maxl,maxs,catalog)
 
 def Encontrar_musica_ruptura(minv,mint,maxv,maxt,catalog):

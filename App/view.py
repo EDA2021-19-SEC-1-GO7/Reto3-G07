@@ -109,7 +109,7 @@ while True:
         char2=input("Seleccione el número de la caracteristica 2: ")
         min2=(input("Minimo: "))
         max2=(input("Maximo: "))
-        res=ctrl.Characterize_reps(ctrl.Traducir_caracteristica(int(char1)),min1,max1,ctrl.Traducir_caracteristica(int(char2)),min2,max2,catalog)
+        res=ctrl.Characterize_reps(ctrl.Traducir_caracteristica(int(char1)),float(min1),float(max1),ctrl.Traducir_caracteristica(int(char2)),float(min2), float(max2),catalog)
         print("Total de eventos de escucha: "+str(res[1]))
         print("Total autores únicos: "+str(res[0]))
 
@@ -118,7 +118,7 @@ while True:
         maxl=input("Vivacidad maxima: ")
         mins=input("Habla minima: ")
         maxs=input("Habla maxima: ")
-        res=ctrl.Encontrar_musica_festejar(minl,mins,maxl,maxs,catalog)
+        res=ctrl.Encontrar_musica_festejar(float(minl),float(mins),float(maxl),float(maxs),catalog)
         print("Numero de pistas: "+str(res[0]))
         lst=res[1]
         for i in range(lt.size(lst)):
@@ -130,7 +130,7 @@ while True:
         maxv=input("Valencia maxima: ")
         mint=input("Tempo minimo: ")
         maxt=input("Tempo maximo: ")
-        res=ctrl.Encontrar_musica_ruptura(minv,mint,maxv,maxt,catalog)
+        res=ctrl.Encontrar_musica_ruptura(float(minv),float(mint),float(maxv),float(maxt),catalog)
         print("Numero de pistas: "+str(res[0]))
         lst=res[1]
         for i in range(lt.size(lst)):
@@ -145,10 +145,17 @@ while True:
             ele = int(input("Inserte el número de género que desea: "))
             lst.append(ele)
         generos=ctrl.Traducir_generos(lst)
+        print("\nTotal of reproductions: {}".format(lt.size(catalog["Eventos"])))
         for genero in generos:
-            res=ctrl.rep_artistas_por_genero(genero[0], str(genero[1]), str(genero[2]), catalog)
-            print(res)
-            
+            res=ctrl.rep_artistas_por_genero(genero[0], genero[1], genero[2], catalog)
+            print("\nFor {} the tempo is between {} and {} BPM".format(res[0], res[1], res[2]))
+            print("{} reproductions: {} with {} different artist".format(res[0], res[4], res[3]))
+            print("-----Some artists for {} -----".format(res[0]))
+            lst=res[5]
+            for i in range(1,lt.size(lst)+1):
+                E=lt.getElement(lst,i)
+                print("Artist {}: ".format(i)+E['artist_id'])
+                
     else:
         sys.exit(0)
 sys.exit(0)
