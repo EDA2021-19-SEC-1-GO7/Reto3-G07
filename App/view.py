@@ -44,7 +44,33 @@ def printMenu():
     print("2- Eventos de escucha que se encuentran en la interseccion de 2 rangos determinados")
     print("3- Encontrar musica para festejar")
     print("4- Encontrar musica para una ruptura amorosa")
-    print("5- Encontrar canciones y artistas por género")
+    print("5- Encontrar número de canciones y artistas por género")
+
+def printCaracteristicas():
+    print("\nCaracteristicas")
+    print("1- Instrumentalness")
+    print("2- Liveness")
+    print("3- Speechiness")
+    print("4- Danceability")
+    print("5- Valence")
+    print("6- Loudness")
+    print("7- Tempo")
+    print("8- Acousticness")
+    print("9- Energy")
+
+def printGeneros():
+    print("\nGeneros")
+    print("1- Reggae ")
+    print("2- Down-Tempo")
+    print("3- Chill-out")
+    print("4- Hip-hop")
+    print("5- Jazz and Funk")
+    print("6- Pop")
+    print("7- R&B")
+    print("8- Rock")
+    print("9- Metal")
+    print("10- Agregar género")
+
 
 catalog = None
 file="context_content_features-small.csv"
@@ -76,15 +102,16 @@ while True:
             i+=1
 
     elif int(inputs[0]) == 2:
-        char1=input("Caracteristica 1: ")
+        printCaracteristicas()
+        char1=input("Seleccione el número de la característica 1: ")
         min1=(input("Minimo: "))
         max1=(input("Maximo: "))
-        char2=input("Caracteristica 2: ")
+        char2=input("Seleccione el número de la caracteristica 2: ")
         min2=(input("Minimo: "))
         max2=(input("Maximo: "))
-        res=ctrl.Characterize_reps(char1,min1,max1,char2,min2,max2,catalog)
+        res=ctrl.Characterize_reps(ctrl.Traducir_caracteristica(int(char1)),min1,max1,ctrl.Traducir_caracteristica(int(char2)),min2,max2,catalog)
         print("Total de eventos de escucha: "+str(res[1]))
-        print("Total autores: "+str(res[0]))
+        print("Total autores únicos: "+str(res[0]))
 
     elif int(inputs[0]) == 3:
         minl=input("Vivacidad minima: ")
@@ -109,7 +136,19 @@ while True:
         for i in range(lt.size(lst)):
             E=lt.getElement(lst,i)
             print("Track {}: ".format(i)+E['track_id'],"with valence of: "+E["valence"],"and tempo of: "+E["tempo"])
-    
+
+    elif int(inputs[0]) == 5:
+        printGeneros()
+        lst=[]
+        n = int(input("Cuántos géneros desea consultar: "))
+        for i in range(0, n):
+            ele = int(input("Inserte el número de género que desea: "))
+            lst.append(ele)
+        generos=ctrl.Traducir_generos(lst)
+        for genero in generos:
+            res=ctrl.rep_artistas_por_genero(genero[0], str(genero[1]), str(genero[2]), catalog)
+            print(res)
+            
     else:
         sys.exit(0)
 sys.exit(0)

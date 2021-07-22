@@ -51,7 +51,8 @@ def newCatalog():
                 'energy':None,
                 'valence':None,
                 'danceability':None,
-                'tempo':None
+                'tempo':None,
+                'loudness':None
                 }
 
     catalog['Eventos'] = lt.newList('ARRAY_LIST')
@@ -73,6 +74,7 @@ def newCatalog():
     catalog['danceability']=om.newMap("RBT")
     catalog['valence']=om.newMap("RBT")
     catalog['tempo']=om.newMap("RBT")
+    catalog['loudness']=om.newMap("RBT")
     return catalog
     
 # Funciones para agregar informacion al catalogo
@@ -88,6 +90,7 @@ def AddEvento(evento,catalog):
     Order_speechiness(evento,catalog)
     Order_valence(evento,catalog)
     Order_tempo(evento,catalog)
+    Order_loudness(evento,catalog)
     return catalog
 
 def mapping_artista(evento,catalog):
@@ -189,6 +192,16 @@ def Order_tempo(evento,catalog):
         lt.addLast(lista,evento)
         om.put(catalog['tempo'], tempo,lista)
 
+def Order_loudness(evento,catalog):
+    loudness=evento["loudness"]
+    if om.contains(catalog['loudness'], loudness):
+        lista=me.getValue(om.get(catalog['loudness'], loudness))
+        lt.addLast(lista,evento)
+    else:
+        lista=lt.newList("ARRAY_LIST")
+        lt.addLast(lista,evento)
+        om.put(catalog['loudness'], loudness,lista)
+
 
 #Falta hacer los otros mapas que ordenan por propiedad
 
@@ -198,7 +211,7 @@ def Order_tempo(evento,catalog):
 def Characterize_reps(char1:str,min_1:float,max_1:float,char2:str,min_2:float,max_2:float,catalog)->tuple:
     listas_1=om.values(catalog[char1],min_1,max_1)
     eventos_n=0
-    artistas=lt.newList()
+    artistas=lt.newList("ARRAY_LIST")
     for i in lt.iterator(listas_1):
         for j in lt.iterator(i):
             if j[char2]<=max_2 and j[char2]>=min_2:
@@ -230,6 +243,85 @@ def Encontrar_musica_ruptura(minv:str,mint:str,maxv:str,maxt:str,catalog):
        return mp.size(mapa),lt.subList(mp.valueSet(mapa),1,8)
     else: 
         return mp.size(mapa), mp.valueSet(mapa)
+
+def Traducir_caracteristica(num:int):
+    caracteristica=None
+    if num==1:
+        caracteristica="instrumentalness"
+    elif num==2:
+        caracteristica="liveness"
+    elif num==3:
+        caracteristica="speechiness"
+    elif num==4:
+        caracteristica="danceability"
+    elif num==5:
+        caracteristica="valence"
+    elif num==6:
+        caracteristica="loudness"
+    elif num==7:
+        caracteristica="tempo"
+    elif num==8:
+        caracteristica="energy"
+    return caracteristica
+
+def Traducir_generos(lista:list):
+    generos=lt.newList("ARRAY_LIST")
+    for numero in lista:
+        if numero==1:
+            name="Reggae"
+            min=60
+            max=90
+        elif numero==2:
+            name="Down Tempo"
+            min=70
+            max=100
+        elif numero==3:
+            name="Chill-Out"
+            min=90
+            max=120
+        elif numero==4:
+            name="Hip-Hop"
+            min=85
+            max=115
+        elif numero==5:
+            name="Jazz and Funk"
+            min=120
+            max=125
+        elif numero==6:
+            name="Pop"
+            min=100
+            max=130
+        elif numero==7:
+            name="R&B"
+            min=60
+            max=80
+        elif numero==8:
+            name="Rock"
+            min=110
+            max=140
+        elif numero==9:
+            name="Metal"
+            min=100
+            max=160
+        elif numero==10:
+            name=input("Escriba el nombre del nuevo género: ")
+            min=int(input("Escriba el tempo mínimo: "))
+            max=int(input("Escriba el tempo máximo: "))
+        lt.addLast(generos,(name, min, max))
+    return generos['elements']
+
+def rep_artistas_por_genero(nombre, min, max, catalog):
+    listas_t=om.values(catalog['tempo'],min,max)
+    artistas=mp.newMap(numelements=100000,maptype="PROBING")
+    eventos=mp.newMap(numelements=100000,maptype="PROBING")
+    for i in lt.iterator(listas_t):
+        if not(mp.contains(artistas,i['artist_id'])):
+                mp.put(artistas,i['artist_id'],i)
+        if not(mp.contains(eventos, i['track_id'])):
+                mp.put(eventos, i['track_id'], i)
+    return listas_t
+
+
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 

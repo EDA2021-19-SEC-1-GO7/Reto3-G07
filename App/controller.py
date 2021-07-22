@@ -43,6 +43,9 @@ def Load_data(catalog,file):
         model.AddEvento(evento,catalog)
     return catalog
 
+def Traducir_caracteristica(num):
+    return model.Traducir_caracteristica(num)
+
 def Characterize_reps(char1:str,min_1:int,max_1:int,char2:str,min_2:int,max_2:int,catalog):
     return model.Characterize_reps(char1,min_1,max_1,char2,min_2,max_2,catalog)
 
@@ -51,6 +54,13 @@ def Encontrar_musica_festejar(minl:str,mins:str,maxl:str,maxs:str,catalog):
 
 def Encontrar_musica_ruptura(minv,mint,maxv,maxt,catalog):
     return model.Encontrar_musica_ruptura(minv,mint,maxv,maxt,catalog)
+
+def Traducir_generos(lista):
+    return model.Traducir_generos(lista)
+
+def rep_artistas_por_genero(nombre, min, max, catalog):
+    return model.rep_artistas_por_genero(nombre, min, max, catalog)
+
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
