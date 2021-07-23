@@ -86,8 +86,8 @@ while True:
         catalog=ctrl.initialize()
         ctrl.Load_data(catalog,file)
         print("\nNumero de eventos: "+str(lt.size(catalog["Eventos"])))
-        print("Numero de artistas: "+str(mp.size(catalog["Artistas"])))
-        print("Numero de pistas: "+str(mp.size(catalog["Pistas"])))
+        print("Numero de artistas únicos: "+str(mp.size(catalog["Artistas"])))
+        print("Numero de pistas únicas: "+str(mp.size(catalog["Pistas"])))
         print("\nPrimeros 5 eventos de escucha")
         i=1
         while i<=5:

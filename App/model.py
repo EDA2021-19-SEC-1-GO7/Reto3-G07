@@ -326,7 +326,6 @@ def rep_artistas_por_genero(nombre, min, max, catalog):
         map_artistas=mp.valueSet(artistas)
     return nombre, min, max, mp.size(artistas), mp.size(eventos), map_artistas
 
-
 # Funciones utilizadas para comparar elementos dentro de una lista
 
 # Funciones de ordenamiento
